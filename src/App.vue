@@ -1,32 +1,35 @@
+<!-- 组件说明 -->
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
+  <div id='app'>
+    <router-view></router-view>
+    <main-tab-bar class='tabbar'></main-tab-bar>
   </div>
 </template>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
+<script>
+    import MainTabBar from 'components/content/tabbar/MainTabBar.vue'
+    export default {
+        name: 'App',
+        components: {
+            MainTabBar,
+        },
+        data() {
+            return {
 
-#nav {
-  padding: 30px;
-}
+            };
+        },
+        computed: {
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+        },
+        methods: {
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+        },
+    }
+</script>
+
+<style scoped>
+    @import url('assets/css/base.css');
+    .tabbar {
+        margin-bottom: 0;
+    }
 </style>
