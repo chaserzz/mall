@@ -1,16 +1,29 @@
 <!-- 组件说明 -->
 <template>
-  <div class=''>
-    <h3>购物车</h3>
+  <div class='Cart'>
+    <nav-bar class='nav-bar'>
+      <div slot='center'>购物车({{length}})</div>
+    </nav-bar>
+    <cart-list />
+    <cart-bottom-bar />
   </div>
 </template>
 
 <script>
-    //import x from ''
+    import NavBar from 'components/common/navbar/NavBar.vue'
+
+    import CartList from './childCom/CartList.vue'
+    import CartBottomBar from './childCom/CartBottomBar'
+    import {
+        mapGetters
+    } from 'vuex'
+
     export default {
         name: 'ShopCar',
         components: {
-
+            NavBar,
+            CartList,
+            CartBottomBar
         },
         data() {
             return {
@@ -18,7 +31,9 @@
             };
         },
         computed: {
-
+            ...mapGetters({
+                length: 'getCartListLength',
+            })
         },
         methods: {
 
@@ -26,6 +41,10 @@
     }
 </script>
 
-<style lang='scss' scoped>
-
+<style scoped>
+    .nav-bar {
+        background-color: var(--color-tint);
+        color: #fff;
+        font-size: 16px;
+    }
 </style>

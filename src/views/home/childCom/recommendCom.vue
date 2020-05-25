@@ -25,15 +25,13 @@
         },
         data() {
             return {
-
+                counter: 0
             };
         },
         computed: {
 
         },
-        methods: {
-
-        },
+        methods: {},
 
     }
 </script>

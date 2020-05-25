@@ -4,7 +4,7 @@
     <swiper>
       <swiper-item v-for='(item,index) in banner' :key='index'>
         <a :herf='item.link' >
-          <img :src="item.image" />
+          <img :src="item.image" @load='swiperLoad'/>
         </a>
       </swiper-item>
     </swiper>
@@ -33,14 +33,19 @@
         },
         data() {
             return {
-
+                hasLoad: false
             };
         },
         computed: {
 
         },
         methods: {
-
+            swiperLoad() {
+                if (!this.hasLoad) {
+                    this.$emit('swiperLoad');
+                    this.hasLoad = true;
+                }
+            }
         },
     }
 </script>

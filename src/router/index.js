@@ -12,7 +12,8 @@ const Cart = () =>
     import ("views/cart/Cart.vue")
 const Profile = () =>
     import ("views/profile/Profile.vue")
-
+const Detail = () =>
+    import ("views/detail/detail.vue")
 
 const routes = [{
         path: '',
@@ -27,13 +28,17 @@ const routes = [{
         component: Category
     },
     {
-        path: '/shopcar',
+        path: '/cart',
         component: Cart
     },
     {
         path: '/profile',
         component: Profile
     },
+    {
+        path: '/detail:iid',
+        component: Detail
+    }
 ]
 
 const router = new VueRouter({

@@ -35,14 +35,19 @@
         methods: {
             //封装的滚动到顶部的事件
             ScrollTo(x, y, time = 500) {
-                this.scroll.scrollTo(x, y, time);
+                this.scroll && this.scroll.scrollTo && this.scroll.scrollTo(x, y, time);
             },
             //封装的结束一次上拉事件
             finishPullUp() {
-                this.scroll.finishPullUp();
+                this.scroll && this.scroll.finishPullUp();
             },
+            //实时更改高度
             refresh() {
-                this.scroll.refresh();
+                this.scroll && this.scroll.refresh();
+
+            },
+            getPositionY() {
+                return this.scroll ? this.scroll.y : 0;
             }
         },
         mounted() {

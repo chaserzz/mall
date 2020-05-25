@@ -1,45 +1,40 @@
-<!-- 组件说明 -->
 <template>
-  <div class='goodlist'>
-    <good-list-item v-for='item in goodlist' :goodsItem='item' class='goodsItem'></good-list-item>
-
-  </div>
-</template>
+    <div class="goods-list">
+      <goods-list-item
+              v-for="item in goods"
+              :goods-item="item" class="item">
+      </goods-list-item>
+    </div>
+  </template>
 
 <script>
-    import goodListItem from './goodListItem.vue'
+    import goodsListItem from './goodListItem'
+
     export default {
-        name: 'goodsList',
+        name: "goodsList",
         components: {
-            goodListItem
+            goodsListItem
         },
         props: {
-            goodlist: {
+            goods: {
                 type: Array,
                 default () {
-                    return [];
+                    return []
                 }
             }
-        },
-        data() {
-            return {
-
-            };
-        },
-        computed: {
-
-        },
-        methods: {
-
-        },
+        }
     }
 </script>
 
 <style scoped>
-    .goodlist {
+    .goods-list {
         display: flex;
         flex-wrap: wrap;
+        padding: 5px;
         justify-content: space-around;
-        padding: 2px;
+    }
+    
+    .goods-list .item {
+        width: 48%;
     }
 </style>

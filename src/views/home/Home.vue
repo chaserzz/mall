@@ -4,19 +4,31 @@
     <nav-bar class = 'navbar'>
       <div slot = "center">购物街</div>
     </nav-bar>
+    <tab-control 
+    :title='["流行","新款","精选"]' 
+    class='tabcontrol' 
+    @tabClick='tabClick'
+    ref="tabcontrol1"
+    v-show='tabShow'
+    ></tab-control>
     <!--滚动内容-->
 <scroll class = 'content' 
         ref='scroll' 
         @scroll='contentScroll' 
         :probe-type='3'
-        :pull-up-load='true''
+        :pull-up-load='true'
         @pullingUp='lodaData'
         >
-    <home-swiper :banner='banner' ></home-swiper>
+    <home-swiper :banner='banner' @swiperLoad='swiperLoaded'></home-swiper>
     <recommendCom :recommend='recommend'/>
-    <feature-view></feature-view>
-    <tab-control :title='["流行","新款","精选"]' class='tabcontrol' @tabClick='tabClick'></tab-control>
-    <goods-list :goodlist='currentList'></goods-list>
+    <feature-view />
+    <tab-control 
+    :title='["流行","新款","精选"]' 
+    class='tabcontrol' 
+    @tabClick='tabClick'
+    ref="tabcontrol2"
+    ></tab-control>
+    <goods-list :goods='currentList'></goods-list>
 </scroll>
     <!--返回顶部-->
 <back-top @click.native='backClick' v-show='showBack'></back-top>
@@ -24,12 +36,23 @@
 </template>
 
 <script>
+    //引入工具函数,
+    //debounce:防抖动函数
+    import {
+        debounce
+    } from '@/common/utils.js';
+    //引入混用js
+    import {
+        itemImgLoad,
+        backTopMixmin
+    } from 'common/mixins.js'
+
     import NavBar from 'components/common/navbar/NavBar.vue';
     import Scroll from 'components/common/scroll/scroll.vue';
 
     import tabControl from 'components/content/tabcontrol/tabcontrol.vue';
     import goodsList from 'components/content/goods/goodsList.vue';
-    import backTop from 'components/content/backtop/backtop.vue'
+
 
     import homeSwiper from './childCom/homeswiper.vue';
     import recommendCom from './childCom/recommendCom.vue';
@@ -49,7 +72,6 @@
             tabControl,
             goodsList,
             Scroll,
-            backTop
         },
         data() {
             return {
@@ -70,9 +92,14 @@
                     }
                 },
                 current: 'pop',
-                showBack: false,
+                tabControlTop: 0,
+                tabShow: false,
+
+                //事件监听的对象
             };
         },
+        //混入JS
+        mixins: [itemImgLoad, backTopMixmin],
         computed: {
             currentList() {
                 return this.goods[this.current].list
@@ -100,22 +127,35 @@
                             this.current = 'sell';
                             break;
                         }
+
+                }
+                this.$refs.tabcontrol1.current = index;
+                this.$refs.tabcontrol2.current = index;
+            },
+
+            //屏幕滚动
+            contentScroll(position) {
+                this.backTopShow(position);
+                if ((-position.y) >= this.tabControlTop) {
+                    this.tabShow = true;
+                } else {
+                    this.tabShow = false;
                 }
             },
-            //返回顶部
-            backClick() {
+            //显示backTop组件
+            //封装到mixins.js中
 
-                this.$refs.scroll.ScrollTo(0, 0);
-
-            },
-            contentScroll(position) {
-                this.showBack = (-position.y) > 1000;
-            },
             //上拉加载更多
             lodaData() {
                 this.getHomeData(this.current);
-                this.$refs.scroll.refresh();
-                this.$refs.scroll.finishPullUp();
+
+            },
+            //解决BScroll的滑动卡顿Bug;
+            //原因时scrollheight由于图片加载慢造成的高度过低
+            //??? 为什么要写在mounted()生命周期函数里面            
+            //获取tab-control的offsetTop
+            swiperLoaded() {
+                this.tabControlTop = this.$refs.tabcontrol2.$el.offsetTop;
             },
             /*
             网络请求的代码
@@ -130,6 +170,7 @@
                 let page = ++this.goods[type].page;
                 getHomeData(type, page).then(res => {
                     this.goods[type].list.push(...(res.data.list));
+                    this.$refs.scroll.finishPullUp();
                 })
             }
 
@@ -140,8 +181,25 @@
             this.getHomeData('pop');
             this.getHomeData('new');
             this.getHomeData('sell');
-        }
-
+        },
+        // mounted() {
+        //     上面引入了debounce函数
+        //     const refresh = debounce(this.$refs.scroll.refresh, 50);
+        //     监听item中的Img加载完成
+        //     this.itemImgLoad = () => {
+        //         refresh();
+        //     };
+        //     this.$bus.$on('itemImgLoad', this.itemImgLoad);
+        // },
+        activated() {
+            this.$refs.scroll.ScrollTo(0, this.scrollY);
+            this.$refs.scroll.refresh();
+        },
+        deactivated() {
+            this.scrollY = this.$refs.scroll.getPositionY();
+            //关闭Home页面的自动刷新
+            this.$bus.$off('itemImgLoad', this.itemImgLoad);
+        },
     }
 </script>
 
@@ -155,16 +213,18 @@
         width: 100%;
         background-color: #ff8198;
         color: white;
-        position: sticky;
+        /*
+        由于用了自动组件的滚动,下面的样式不设置可以实现navbar永远在顶部停留
+        */
+        /* position: sticky;
         z-index: 9;
         top: 0;
         left: 0;
-        right: 0;
+        right: 0; */
     }
     
     .tabcontrol {
-        position: sticky;
-        top: 44px;
+        position: relative;
         z-index: 9;
     }
     

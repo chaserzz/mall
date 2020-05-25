@@ -1,41 +1,43 @@
-<!-- 组件说明 -->
 <template>
-  <div class="goods-item" >
-    <img :src='goodsItem.show.img'>
-    <div class="goods-info">
-      <p>{{goodsItem.title}}</p>
-      <span class="price">{{goodsItem.price}}</span>
-      <span class="collect">{{goodsItem.cfav}}</span>
+    <div class="goods-item" @click="itemClick">
+      <img @load="imgLoad" v-lazy="showImage" :key="showImage" />
+      <div class="goods-info">
+        <p>{{goodsItem.title}}</p>
+        <span class="price">{{goodsItem.price}}</span>
+        <span class="collect">{{goodsItem.cfav}}</span>
+      </div>
     </div>
-  </div>
-</template>
+  </template>
 
 <script>
-    //import x from ''
     export default {
-        name: 'goodListItem',
-        components: {
-
-        },
+        name: "GoodsListItem",
         props: {
             goodsItem: {
                 type: Object,
                 default () {
-                    return {};
-                },
+                    return {}
+                }
             }
         },
-        data() {
-            return {
-
-            };
-        },
         computed: {
-
+            showImage() {
+                return this.goodsItem.img || this.goodsItem.image || this.goodsItem.show.img
+            }
         },
         methods: {
-
-        },
+            itemClick() {
+                // 1.获取iid
+                const iid = this.goodsItem.iid;
+                // 2.跳转到详情页面
+                this.$router.push({
+                    path: '/detail' + iid,
+                })
+            },
+            imgLoad() {
+                this.$bus.$emit('imgLoad')
+            }
+        }
     }
 </script>
 
@@ -43,7 +45,6 @@
     .goods-item {
         padding-bottom: 40px;
         position: relative;
-        width: 48%;
     }
     
     .goods-item img {

@@ -1,7 +1,9 @@
 <!-- 组件说明 -->
 <template>
   <div id='app'>
-    <router-view></router-view>
+      <keep-alive exclude='detail'>
+    <router-view></router-view>      
+      </keep-alive>
     <main-tab-bar class='tabbar'></main-tab-bar>
   </div>
 </template>
@@ -30,6 +32,6 @@
 <style scoped>
     @import url('assets/css/base.css');
     .tabbar {
-        margin-bottom: 0;
+        position: fixed;
     }
 </style>
