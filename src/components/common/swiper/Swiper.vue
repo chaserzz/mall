@@ -1,228 +1,205 @@
+<!-- 组件说明 -->
 <template>
-    <div id="hy-swiper">
-      <div class="swiper" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd">
-        <slot></slot>
-      </div>
-      <slot name="indicator">
-      </slot>
-      <div class="indicator">
-        <slot name="indicator" v-if="showIndicator && slideCount>1">
-          <div v-for="(item, index) in slideCount" class="indi-item" :class="{active: index === currentIndex-1}" :key="index"></div>
-        </slot>
-      </div>
+  <div id='Abe_swiper'>
+    <div class='swiper' @touchstart='touchStart' @touchmove='touchMove' @touchend='touchEnd'>
+        <!-- 轮播图内容 -->
+        <slot> </slot>
     </div>
+    <!-- 轮播图下面的圆点 -->
+    <div class="indicator">
+        <slot name="indicator" v-if=" showIndicator && slideCount>1 ">
+            <div v-for="(item, index) in slideCount" class="indi-item" :class="{active: index === currentItem-1}" :key="index"></div>
+        </slot>
+    </div>
+</div>
 </template>
 
 <script>
+    //import x from ''
     export default {
-        name: "Swiper",
+        name: 'Swiper',
         props: {
+            //轮播图定时轮转图片的时间
             interval: {
                 type: Number,
                 default: 3000
             },
+            //动画持续的时间
             animDuration: {
                 type: Number,
                 default: 300
             },
+            //每次移动多少距离后自动移动图片
             moveRatio: {
                 type: Number,
                 default: 0.25
             },
+            //控制小圆点的显示
             showIndicator: {
                 type: Boolean,
                 default: true
             }
         },
-        data: function() {
+        components: {
+
+        },
+        data() {
             return {
                 slideCount: 0, // 元素个数
-                totalWidth: 0, // swiper的宽度
+                totalWidth: 0, //Swiper的宽度
                 swiperStyle: {}, // swiper样式
                 currentIndex: 1, // 当前的index
                 scrolling: false, // 是否正在滚动
-            }
-        },
-        mounted: function() {
-            // 1.操作DOM, 在前后添加Slide
-            setTimeout(() => {
-                this.handleDom();
-
-                // 2.开启定时器
-                this.startTimer();
-            }, 100)
+            };
         },
         methods: {
-            /**
-             * 定时器操作
-             */
-            startTimer: function() {
+            //操作Dom,进行添加最后一个和第一个图片的复制和总宽度
+            handleDom() {
+                let elSwiper = document.querySelector('.swiper')
+                let slides = document.getElementsByClassName('slide')
+                    // 获取到slide 的个数
+                this.slideCount = slides.length
+                    //轮播图中的总数＞1
+                if (this.slideCount > 1) {
+                    //创建第一个元素的复制节点
+                    let firSlide = slides[0].cloneNode(true)
+                        //创建最后一个元素的复制节点 
+                    let latSlide = slides[this.slideCount - 1].cloneNode(true)
+                    elSwiper.appendChild(firSlide)
+                    elSwiper.insertBefore(latSlide, slides[0])
+                        //获取swiper的宽度
+                    this.totalWidth = elSwiper.offsetWidth
+                    this.swiperStyle = elSwiper.style
+                        //在增加图片以后,让其显示第一张图片
+                    this.setTransform(-this.totalWidth)
+                }
+            },
+            //滚动事件的实现
+            setTransform(position) {
+                this.swiperStyle.transform = `translate3d(${position}px, 0, 0)`
+                this.swiperStyle['-webkit-transform'] = `translate3d(${position}px), 0, 0`
+                this.swiperStyle['-ms-transform'] = `translate3d(${position}px), 0, 0`
+            },
+            //定时器开始阶段
+            startTime() {
+                let that = this;
                 this.playTimer = window.setInterval(() => {
-                    this.currentIndex++;
-                    this.scrollContent(-this.currentIndex * this.totalWidth);
+                    //箭头函数 使得this = Vue 否则 this = window对象
+                    this.currentIndex++
+                        this.srcollContent(-this.currentIndex * this.totalWidth)
                 }, this.interval)
             },
-            stopTimer: function() {
-                window.clearInterval(this.playTimer);
+            //定时器的结束
+            stopTimer() {
+                window.clearInterval(this.playTimer)
             },
-
             /**
-             * 滚动到正确的位置
+             * 滚动到正确的位置(带动画效果)
              */
-            scrollContent: function(currentPosition) {
-                // 0.设置正在滚动
-                this.scrolling = true;
-
-                // 1.开始滚动动画
-                this.swiperStyle.transition = 'transform ' + this.animDuration + 'ms';
+            srcollContent(currentPosition) {
+                //设置正在滚动
+                this.scroll = true
+                    // 1.开始滚动动画
+                    //bug 无法做到平滑的转换
+                this.swiperStyle.transition = 'transform ' + 300 + 'ms'
                 this.setTransform(currentPosition);
-
-                // 2.判断滚动到的位置
-                this.checkPosition();
-
-                // 4.滚动完成
-                this.scrolling = false
+                //校正滚动的位置
+                //即调整currentIndex的值
+                this.checkPosition()
+                    //结束滚动
+                this.scroll = false
             },
-
-            /**
-             * 校验正确的位置
-             */
-            checkPosition: function() {
+            //校正滚动的位置
+            checkPosition() {
+                //需要定时器来进行修正,否则会是同步操作导致transition的变化为0
                 window.setTimeout(() => {
-                    // 1.校验正确的位置
-                    this.swiperStyle.transition = '0ms';
-                    if (this.currentIndex >= this.slideCount + 1) {
-                        this.currentIndex = 1;
-                        this.setTransform(-this.currentIndex * this.totalWidth);
-                    } else if (this.currentIndex <= 0) {
-                        this.currentIndex = this.slideCount;
-                        this.setTransform(-this.currentIndex * this.totalWidth);
+                    this.swiperStyle.transition = '0ms'
+                    if (this.currentIndex >= (this.slideCount + 1)) {
+                        this.currentIndex = 1
+                        this.setTransform(-this.currentIndex * this.totalWidth)
                     }
-
-                    // 2.结束移动后的回调
-                    this.$emit('transitionEnd', this.currentIndex - 1);
+                    if (this.currentIndex <= 0) {
+                        this.currentIndex = this.slideCount;
+                        this.setTransform(-this.currentIndex * this.totalWidth)
+                    }
+                    //完成一张轮播事件之后触发的回调函数
+                    this.$emit('transitionEnd', this.currentIndex - 1)
                 }, this.animDuration)
+
             },
-
-            /**
-             * 设置滚动的位置
-             */
-            setTransform: function(position) {
-                this.swiperStyle.transform = `translate3d(${position}px, 0, 0)`;
-                this.swiperStyle['-webkit-transform'] = `translate3d(${position}px), 0, 0`;
-                this.swiperStyle['-ms-transform'] = `translate3d(${position}px), 0, 0`;
-            },
-
-            /**
-             * 操作DOM, 在DOM前后添加Slide
-             */
-            handleDom: function() {
-                // 1.获取要操作的元素
-                let swiperEl = document.querySelector('.swiper');
-                let slidesEls = swiperEl.getElementsByClassName('slide');
-
-                // 2.保存个数
-                this.slideCount = slidesEls.length;
-
-                // 3.如果大于1个, 那么在前后分别添加一个slide
-                if (this.slideCount > 1) {
-                    let cloneFirst = slidesEls[0].cloneNode(true);
-                    let cloneLast = slidesEls[this.slideCount - 1].cloneNode(true);
-                    swiperEl.insertBefore(cloneLast, slidesEls[0]);
-                    swiperEl.appendChild(cloneFirst);
-                    this.totalWidth = swiperEl.offsetWidth;
-                    this.swiperStyle = swiperEl.style;
+            //开始触屏
+            touchStart(e) {
+                //当图片正在滚动时 不允许进行调整
+                if (this.scroll) {
+                    return;
                 }
+                this.stopTimer()
+                    // 3.保存开始滚动的位置
+                this.startX = e.touches[0].pageX
 
-                // 4.让swiper元素, 显示第一个(目前是显示前面添加的最后一个元素)
-                this.setTransform(-this.totalWidth);
             },
-
-            /**
-             * 拖动事件的处理
-             */
-            touchStart: function(e) {
-                // 1.如果正在滚动, 不可以拖动
-                if (this.scrolling) return;
-
-                // 2.停止定时器
-                this.stopTimer();
-
-                // 3.保存开始滚动的位置
-                this.startX = e.touches[0].pageX;
+            //触屏移动事件
+            touchMove(e) {
+                this.distance = e.touches[0].pageX - this.startX
+                let currentMove = Math.abs(this.distance)
+                if (currentMove <= this.totalWidth) {
+                    let currentposition = (-this.currentIndex * this.totalWidth) + this.distance;
+                    this.setTransform(currentposition)
+                }
             },
+            //结束触屏事件
+            touchEnd(e) {
+                let currentMove = Math.abs(this.distance)
 
-            touchMove: function(e) {
-                // 1.计算出用户拖动的距离
-                this.currentX = e.touches[0].pageX;
-                this.distance = this.currentX - this.startX;
-                let currentPosition = -this.currentIndex * this.totalWidth;
-                let moveDistance = this.distance + currentPosition;
-
-                // 2.设置当前的位置
-                this.setTransform(moveDistance);
-            },
-
-            touchEnd: function(e) {
-                // 1.获取移动的距离
-                let currentMove = Math.abs(this.distance);
-
-                // 2.判断最终的距离
                 if (this.distance === 0) {
                     return
-                } else if (this.distance > 0 && currentMove > this.totalWidth * this.moveRatio) { // 右边移动超过0.5
+                } else if (this.distance > 0 && currentMove > this.totalWidth * /*this.moveRatio 由父组件进行修正 移动的距离*/ 0.25) { // 右边移动超过0.5
                     this.currentIndex--
-                } else if (this.distance < 0 && currentMove > this.totalWidth * this.moveRatio) { // 向左移动超过0.5
+                } else if (this.distance < 0 && currentMove > this.totalWidth * /*this.moveRatio*/ 0.25) { // 向左移动超过0.5
                     this.currentIndex++
                 }
-
-                // 3.移动到正确的位置
-                this.scrollContent(-this.currentIndex * this.totalWidth);
-
-                // 4.移动完成后重新开启定时器
-                this.startTimer();
-            },
-
-            /**
-             * 控制上一个, 下一个
-             */
-            previous: function() {
-                this.changeItem(-1);
-            },
-
-            next: function() {
-                this.changeItem(1);
-            },
-
-            changeItem: function(num) {
-                // 1.移除定时器
-                this.stopTimer();
-
-                // 2.修改index和位置
-                this.currentIndex += num;
-                this.scrollContent(-this.currentIndex * this.totalWidth);
-
-                // 3.添加定时器
-                this.startTimer();
+                this.srcollContent(-this.currentIndex * this.totalWidth)
+                this.startTime()
             }
-        }
+        },
+        computed: {
+            currentItem() {
+                if (this.currentIndex === 0) {
+                    return this.slideCount;
+                } else if (this.currentIndex === this.slideCount + 1) {
+                    return 1;
+                }
+                return this.currentIndex;
+            }
+        },
+        mounted() {
+            window.setTimeout(() => {
+                this.handleDom();
+                this.startTime();
+            }, 300)
+        },
     }
 </script>
 
 <style scoped>
-    #hy-swiper {
-        overflow: hidden;
+    #Abe_swiper {
         position: relative;
+        overflow: hidden;
     }
     
     .swiper {
         display: flex;
     }
     
+    .swiper img {
+        width: 100%;
+        height: 250px;
+    }
+    
     .indicator {
+        position: absolute;
         display: flex;
         justify-content: center;
-        position: absolute;
         width: 100%;
         bottom: 8px;
     }

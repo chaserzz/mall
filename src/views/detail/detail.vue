@@ -102,7 +102,6 @@
                 currentIndex: 0
             };
         },
-        computed: {},
         methods: {
             //商品图片加载完成
             goodsimgload() {
