@@ -14,7 +14,8 @@ const Profile = () =>
     import ("views/profile/Profile.vue")
 const Detail = () =>
     import ("views/detail/detail.vue")
-
+const Register = () =>
+    import ('views/register/Register')
 const routes = [{
         path: '',
         redirect: '/home'
@@ -38,6 +39,10 @@ const routes = [{
     {
         path: '/detail:iid',
         component: Detail
+    },
+    {
+        path: '/register',
+        component: Register
     }
 ]
 

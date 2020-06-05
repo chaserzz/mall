@@ -45,5 +45,6 @@
         background: rgba(0, 0, 0, .6);
         color: white;
         border-radius: 10px;
+        font-size: 15px;
     }
 </style>

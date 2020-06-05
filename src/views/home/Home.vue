@@ -11,6 +11,7 @@
     ref="tabcontrol1"
     v-show='tabShow'
     ></tab-control>
+
     <!--滚动内容-->
 <scroll class = 'content' 
         ref='scroll' 
@@ -40,28 +41,28 @@
     //debounce:防抖动函数
     import {
         debounce
-    } from '@/common/utils.js';
+    } from '@/common/utils.js'
     //引入混用js
     import {
         itemImgLoad,
         backTopMixmin
     } from 'common/mixins.js'
 
-    import NavBar from 'components/common/navbar/NavBar.vue';
-    import Scroll from 'components/common/scroll/scroll.vue';
+    import NavBar from 'components/common/navbar/NavBar.vue'
+    import Scroll from 'components/common/scroll/scroll.vue'
 
-    import tabControl from 'components/content/tabcontrol/tabcontrol.vue';
-    import goodsList from 'components/content/goods/goodsList.vue';
+    import tabControl from 'components/content/tabcontrol/tabcontrol.vue'
+    import goodsList from 'components/content/goods/goodsList.vue'
 
 
-    import homeSwiper from './childCom/homeswiper.vue';
-    import recommendCom from './childCom/recommendCom.vue';
-    import featureView from './childCom/featureview.vue';
+    import homeSwiper from './childCom/homeswiper.vue'
+    import recommendCom from './childCom/recommendCom.vue'
+    import featureView from './childCom/featureview.vue'
 
     import {
         getHomeMultidata,
         getHomeData
-    } from 'network/home.js';
+    } from 'network/home.js'
     export default {
         name: 'Home',
         components: {

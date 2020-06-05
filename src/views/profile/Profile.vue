@@ -33,7 +33,7 @@
 </template>
 
 <script>
-    import NavBar from 'components/common/navbar/NavBar.vue';
+    import NavBar from 'components/common/navbar/NavBar.vue'
 
     import UserInfo from './childCom/UserInfo'
     import ListView from './childCom/ListView'

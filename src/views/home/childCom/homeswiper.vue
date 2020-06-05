@@ -33,6 +33,7 @@
         },
         data() {
             return {
+                //加载完成
                 hasLoad: false
             };
         },

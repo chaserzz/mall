@@ -50,6 +50,7 @@
                 swiperStyle: {}, // swiper样式
                 currentIndex: 1, // 当前的index
                 scrolling: false, // 是否正在滚动
+
             };
         },
         methods: {
@@ -82,7 +83,6 @@
             },
             //定时器开始阶段
             startTime() {
-                let that = this;
                 this.playTimer = window.setInterval(() => {
                     //箭头函数 使得this = Vue 否则 this = window对象
                     this.currentIndex++
@@ -92,6 +92,7 @@
             //定时器的结束
             stopTimer() {
                 window.clearInterval(this.playTimer)
+                this.playTimer = null
             },
             /**
              * 滚动到正确的位置(带动画效果)
@@ -131,7 +132,7 @@
             touchStart(e) {
                 //当图片正在滚动时 不允许进行调整
                 if (this.scroll) {
-                    return;
+                    return
                 }
                 this.stopTimer()
                     // 3.保存开始滚动的位置

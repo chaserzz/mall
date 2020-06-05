@@ -2,10 +2,10 @@
 <template>
   <div class='user-info'>
     <a href="#">
-      <div class='register'>
+      <div class='register' @click='toRegister'>
         <div class='userImg'>     
           <slot name='userImg'>
-            <img src='~assets/img/common/userImg.jpg' />      
+            <img src='~assets/img/profile/avatar.svg' />      
           </slot>            
         </div>
         <div class='userPrivateInfo'>
@@ -47,7 +47,9 @@
 
         },
         methods: {
-
+            toRegister() {
+                this.$router.push('/register')
+            }
         },
     }
 </script>

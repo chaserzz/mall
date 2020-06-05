@@ -46,7 +46,7 @@
 
     import Scroll from 'components/common/scroll/scroll.vue'
 
-    import goodsList from 'components/content/goods/goodsList.vue';
+    import goodsList from 'components/content/goods/goodsList.vue'
 
     import {
         debounce
@@ -126,18 +126,21 @@
             },
             //添加到购物车事件
             addCart() {
-                const product = {};
-                product.price = this.goods.realPrice;
-                product.title = this.goods.title;
-                product.desc = this.goods.desc;
-                product.imge = this.topImages[0];
-                product.iid = this.iid;
-                this.$store.dispatch('add_Cart', product).then(res => {
-                    console.log(res);
+                if (localStorage.getItem.isLogin === true) {
+                    const product = {};
+                    product.price = this.goods.realPrice;
+                    product.title = this.goods.title;
+                    product.desc = this.goods.desc;
+                    product.imge = this.topImages[0];
+                    product.iid = this.iid;
+                    this.$store.dispatch('add_Cart', product).then(res => {
+                        console.log(res);
+                    })
+                    this.$toast.show('添加到购物车成功', 2000);
+                } else {
+                    this.$toast.show('请登录后再添加商品 ', 2000);
+                }
 
-                })
-
-                this.$toast.show('添加到购物车成功', 2000);
             },
             //获取数据
             _getDetailData() {

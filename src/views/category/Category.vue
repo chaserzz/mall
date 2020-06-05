@@ -27,10 +27,10 @@
         getCategoryDetail
     } from 'network/category.js'
 
-    import NavBar from 'components/common/navbar/NavBar.vue';
-    import Scroll from 'components/common/scroll/scroll.vue';
-    import tabControl from 'components/content/tabcontrol/tabcontrol.vue';
-    import goodsList from 'components/content/goods/goodsList.vue';
+    import NavBar from 'components/common/navbar/NavBar.vue'
+    import Scroll from 'components/common/scroll/scroll.vue'
+    import tabControl from 'components/content/tabcontrol/tabcontrol.vue'
+    import goodsList from 'components/content/goods/goodsList.vue'
     //子组件
     import CategoryMeun from './childCom/CategoryMeun'
     import CategoryTabContent from './childCom/CategoryTabContent'
