@@ -17,7 +17,7 @@
     </scroll>
     <detail-bottom-bar @addCart='addCart'/>
     <!-- 返回顶部,封装在了mixin.js中 -->
-    <back-top @click.native='backClick' v-show='showBack' />
+    <back-top class='backTop' @click.native='backClick' v-show='showBack' />
   </div>
 </template>
 
@@ -227,5 +227,11 @@
         bottom: 58px;
         left: 0;
         right: 0;
+    }
+    
+    .backTop {
+        position: fixed;
+        bottom: 55px;
+        right: 3px;
     }
 </style>

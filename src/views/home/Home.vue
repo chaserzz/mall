@@ -32,7 +32,7 @@
     <goods-list :goods='currentList'></goods-list>
 </scroll>
     <!--返回顶部-->
-<back-top @click.native='backClick' v-show='showBack'></back-top>
+<back-top class='backTop' @click.native='backClick' v-show='showBack' />
   </div>
 </template>
 
@@ -233,5 +233,11 @@
         position: absolute;
         top: 44px;
         bottom: 48px;
+    }
+    
+    .backTop {
+        position: fixed;
+        bottom: 47px;
+        right: 4px;
     }
 </style>
