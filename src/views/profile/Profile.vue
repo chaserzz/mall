@@ -4,7 +4,8 @@
 <nav-bar class='nav-bar'>
     <div slot='center'>我的档案</div>
 </nav-bar>
-<user-info />
+<user-info :user-name='userName'/>
+
     <!--2.没有单独封装: 不同的地方太多, 需要传过多的参数-->
     <section class="account">
       <div class="account-item">
@@ -47,6 +48,7 @@
         },
         data() {
             return {
+                userName: '',
                 orderList: [{
                     image: require('assets/img/profile/message.svg'),
                     info: '我的消息'
@@ -66,11 +68,17 @@
                 }, ]
             };
         },
-        computed: {
-
-        },
         methods: {
-
+            Nickname() {
+                if (localStorage.getItem('userName')) {
+                    this.userName = localStorage.getItem('userName')
+                } else {
+                    this.userName = '登录/注册'
+                }
+            }
+        },
+        activated() {
+            this.Nickname();
         },
     }
 </script>

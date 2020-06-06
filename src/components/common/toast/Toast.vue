@@ -37,6 +37,7 @@
 <style scoped>
     .toast {
         position: fixed;
+        box-sizing: content-box;
         transform: translate(-50%, -50%);
         padding: 8px 10px;
         top: 50%;
@@ -45,6 +46,6 @@
         background: rgba(0, 0, 0, .6);
         color: white;
         border-radius: 10px;
-        font-size: 15px;
+        font-size: 14px;
     }
 </style>

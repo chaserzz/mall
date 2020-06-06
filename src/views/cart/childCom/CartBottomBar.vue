@@ -8,7 +8,7 @@
     <div class='price'>
       <span>总价:{{totalPrice}}</span> 
     </div>
-    <div class='total'>
+    <div class='total' @click='payfor'>
       <span>去结算 <span v-if='totalLength >0'>({{totalLength}})</span></span>
     </div>
   </div>
@@ -34,9 +34,11 @@
         computed: {
             ...mapGetters(['getCartList', 'getCartListLength']),
             totalPrice() {
-                return '￥' + this.getCartList.filter(item => item.checked).reduce((preval, item) => {
+                let price = this.getCartList.filter(item => item.checked).reduce((preval, item) => {
                     return preval + item.price * item.counter;
-                }, 0)
+                }, 0);
+                price = price.toFixed(2);
+                return '￥' + price;
             },
             totalLength() {
                 return this.getCartList.filter(item => item.checked).length
@@ -53,6 +55,18 @@
                     this.$store.commit('select_all', !(this.checkedAll));
                 }
 
+            },
+            payfor() {
+                if (localStorage.getItem('isLogin') != 'true') {
+                    this.$toast.show('请先登录', 2000)
+                } else {
+                    if (this.totalLength === 0) {
+                        this.$toast.show('请先购买商品', 2000)
+                    } else {
+                        this.$toast.show('购买成功', 2000)
+                        this.$store.commit('payfor');
+                    }
+                }
             }
         },
     }

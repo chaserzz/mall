@@ -126,7 +126,8 @@
             },
             //添加到购物车事件
             addCart() {
-                if (localStorage.getItem.isLogin === true) {
+
+                if (localStorage.getItem('isLogin') === 'true') {
                     const product = {};
                     product.price = this.goods.realPrice;
                     product.title = this.goods.title;
