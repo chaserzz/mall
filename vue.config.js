@@ -22,12 +22,11 @@ module.exports = {
             config.entry('app').clear().add('./src/main-dev.js')
         })　　　　
 
-        // config.set('externals', {
-        //     vue: 'Vue',
-        //     'vue-router': 'VueRouter',
-        //     axios: 'axios',
-        //     vuex: 'vuex',
-        //     'vue-lazyload': 'vueLazyload'
-        // })
+        config.set('externals', {
+            vue: 'Vue',
+            axios: 'axios',
+        })
     },
+    //解决dist文件夹下面的index.html的css文件引入报错
+    publicPath: "./"
 }

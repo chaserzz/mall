@@ -18,36 +18,43 @@ const Register = () =>
     import ('views/register/Register')
 const routes = [{
         path: '',
+
         redirect: '/home'
     },
     {
         path: '/home',
+        name: 'Home',
         component: Home
     },
     {
         path: '/category',
+        name: 'Category',
         component: Category
     },
     {
         path: '/cart',
+        name: 'Cart',
         component: Cart
     },
     {
         path: '/profile',
+        name: 'Profile',
         component: Profile
     },
     {
         path: '/detail:iid',
+        name: 'Detail',
         component: Detail
     },
     {
         path: '/register',
+        name: 'Register',
         component: Register
     }
 ]
 
 const router = new VueRouter({
-    mode: 'history',
+    mode: 'hash',
     base: process.env.BASE_URL,
     routes
 })

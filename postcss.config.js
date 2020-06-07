@@ -11,5 +11,6 @@ module.exports = {
             mediaQuery: false, //允许在媒体查询中转换为‘px’
             exclude: [/Tabbar/] //不需要转化的组件文件名正则，必须是正则表达式
         }
-    }
+    },
+
 }
