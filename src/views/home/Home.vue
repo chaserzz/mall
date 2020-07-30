@@ -149,7 +149,6 @@
             //上拉加载更多
             lodaData() {
                 this.getHomeData(this.current);
-
             },
             //解决BScroll的滑动卡顿Bug;
             //原因时scrollheight由于图片加载慢造成的高度过低

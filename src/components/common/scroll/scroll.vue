@@ -17,6 +17,7 @@
                 default: 0
             },
             pullUpLoad: {
+                //是否允许上拉加载更多
                 type: Boolean,
                 default: false
             }

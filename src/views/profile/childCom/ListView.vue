@@ -27,7 +27,7 @@
     #list {
         padding-top: 25px;
         background-color: #f3f3f3;
-        font-size: 15px;
+        font-size: .5rem;
         color: #333;
     }
     
@@ -38,9 +38,14 @@
         background-color: #fff;
     }
     
+    .icon {
+        width: .7rem;
+        height: .7rem;
+    }
+    
     .icon img {
-        width: 18px;
-        height: 18px;
+        width: 100%;
+        height: 100%;
     }
     
     .item .icon {
@@ -50,9 +55,9 @@
         top: -7px;
     }
     
-    .item .info {
+    .item {
         margin-left: 40px;
-        border-bottom: 1px solid rgba(100, 100, 100, .1);
+        border-bottom: .025rem solid #e4e4e4;
         padding-left: 5px;
     }
     

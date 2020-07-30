@@ -96,6 +96,7 @@
     .account-item {
         width: 100%;
         background-color: #fff;
+        border-right: .6rem solid #e4e4e4;
         margin-right: 1px;
         text-align: center;
     }
